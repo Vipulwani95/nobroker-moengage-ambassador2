@@ -1,0 +1,63 @@
+name: Kibana user state writing in Earning Tracker
+
+on:
+  schedule:
+  # # 8:10 AM IST = 2:40 AM UTC (IST is UTC+5:30) daily
+    - cron: '40 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-earning-tracker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openvpn
+
+      - name: Map Kibana Hostname locally
+        run: |
+          echo "34.93.222.73 reports.nobroker.in" | sudo tee -a /etc/hosts
+          cat /etc/hosts
+
+      - name: Create VPN Configuration Files
+        run: |
+          echo "${{ secrets.VPN_CONFIG }}" > company.ovpn
+          echo "${{ secrets.VPN_TLS_KEY }}" > "4th-UDP4-1194-vipul.wani@nobroker.in-tls.key"
+          echo "${{ secrets.VPN_P12_BASE64 }}" | base64 -d > "4th-UDP4-1194-vipul.wani@nobroker.in.p12"
+
+      - name: Connect to VPN
+        run: |
+          sudo openvpn --config company.ovpn --log openvpn.log --daemon
+          echo "Waiting 20 seconds for VPN connection to establish..."
+          sleep 20
+          echo "--- OpenVPN Log Summary ---"
+          sudo cat openvpn.log
+          
+          echo "Testing reachability of Kibana port 5609..."
+          curl -I -m 10 http://reports.nobroker.in:5609/ || echo "Curl connection test complete"
+
+      - name: Run user state update script
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          OUTPUT_CSV_PATH: "combined_user_states.csv"
+        run: python kibana_reports/kibana_earnings_tracker_update.py
+
+      - name: Kill VPN Connection
+        if: always()
+        run: |
+          sudo killall openvpn || true

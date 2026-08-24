@@ -1,0 +1,42 @@
+name: Moengage Interested but form not filled push
+
+on:
+  schedule:
+  # # 3:00 PM IST = 9:30 AM UTC (IST is UTC+5:30) daily
+    - cron: '30 9 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run without actually pushing to MoEngage or writing to sheet'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  push-to-moengage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run MoEngage push script
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          MOENGAGE_WORKSPACE_ID: ${{ secrets.MOENGAGE_WORKSPACE_ID }}
+          MOENGAGE_API_KEY: ${{ secrets.MOENGAGE_API_KEY }}
+          NON_INTERACTIVE: 'true'
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+        run: python moengage_push_ambassador2.py

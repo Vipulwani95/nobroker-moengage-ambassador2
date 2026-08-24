@@ -1,0 +1,32 @@
+name: Moengage Interested but form not filled old acquistion
+
+on:
+  schedule:
+  # # 4:04 PM IST = 10:34 AM UTC (IST is UTC+5:30) daily
+    - cron: '34 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  push-old-acquisition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run old acquisition push script
+        env:
+          MOENGAGE_WORKSPACE_ID: ${{ secrets.MOENGAGE_WORKSPACE_ID }}
+          MOENGAGE_API_KEY: ${{ secrets.MOENGAGE_API_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: python moengage_push_old_interested_acquisition.py

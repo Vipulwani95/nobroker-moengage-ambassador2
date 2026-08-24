@@ -1,0 +1,11 @@
+.env
+.idea/
+__pycache__/
+*.pyc
+*.csv
+openvpn.log
+company.ovpn
+*.key
+*.p12
+*.json
+!plugin.json
