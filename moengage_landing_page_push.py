@@ -56,8 +56,8 @@ MAX_WORKERS = 20
 RETRY_LIMIT = 3
 RETRY_DELAY = 2
 
-# Pause after every 1000 uploads
-UPLOAD_CHUNK_SIZE = 1000
+# Pause after every 2000 uploads
+UPLOAD_CHUNK_SIZE = 2000
 
 # Daily upload limit
 DAILY_LIMIT = 2000
@@ -385,7 +385,7 @@ for chunk_start in range(0, len(eligible_rows), UPLOAD_CHUNK_SIZE):
 
     # Ask user before next chunk (skipped entirely in CI/non-interactive runs)
     if chunk_end < len(eligible_rows) and not NON_INTERACTIVE:
-        user_input = input("\n➡️ Continue next 1000 rows? (yes/no): ").strip().lower()
+        user_input = input(f"\n➡️ Continue next {UPLOAD_CHUNK_SIZE} rows? (yes/no): ").strip().lower()
         if user_input not in ["yes", "y"]:
             print("\n⛔ Upload stopped by user.")
             break
