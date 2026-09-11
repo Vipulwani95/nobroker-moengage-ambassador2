@@ -32,8 +32,9 @@ load_env()
 credentials_path = 'D:/Downloads/db-mismath-starship-data-ff9d8efaf2bb.json'
 GOOGLE_SERVICE_ACCOUNT_JSON = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
 
-source_sheet_name = "Jul-2026"
-source_worksheet_name = "Jul-2026"
+current_month_str = datetime.now().strftime("%b-%Y")
+source_sheet_name = os.environ.get("NP6_SHEET_NAME", current_month_str)
+source_worksheet_name = os.environ.get("NP6_SHEET_NAME", current_month_str)
 destination_sheet_name = "Moengage"
 
 workspace_id = os.environ.get("MOENGAGE_WORKSPACE_ID")
