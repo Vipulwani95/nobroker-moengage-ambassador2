@@ -1,6 +1,9 @@
 name: MoEngage NP6 Owners Push
 
 on:
+  schedule:
+    # 5:00 PM IST = 11:30 AM UTC daily
+    - cron: '30 11 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
