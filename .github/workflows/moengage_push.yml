@@ -1,9 +1,6 @@
 name: Moengage Interested but form not filled push
 
 on:
-  schedule:
-  # # 3:00 PM IST = 9:30 AM UTC (IST is UTC+5:30) daily
-    - cron: '30 9 * * *'
   workflow_dispatch:
     inputs:
       dry_run:

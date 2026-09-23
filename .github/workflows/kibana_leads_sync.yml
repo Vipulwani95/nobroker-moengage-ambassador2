@@ -1,9 +1,6 @@
 name: Kibana Ambassador leads update current sheet daily
 
 on:
-  schedule:
-  # # 10:13 AM IST = 4:43 AM UTC (IST is UTC+5:30) daily
-    - cron: '13 4 * * *'
   workflow_dispatch:
     inputs:
       test_mode:

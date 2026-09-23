@@ -1,9 +1,6 @@
 name: Moengage previous month leads push
 
 on:
-  schedule:
-  # # 12:03 PM IST = 6:33 AM UTC (IST is UTC+5:30) daily
-    - cron: '33 6 * * *'
   workflow_dispatch:
     inputs:
       test_mode:

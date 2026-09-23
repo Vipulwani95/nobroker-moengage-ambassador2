@@ -1,9 +1,6 @@
 name: Kibana user state update for acquisition
 
 on:
-  schedule:
-  # # 8:05 AM IST = 2:35 AM UTC (IST is UTC+5:30) daily
-    - cron: '35 2 * * *'
   workflow_dispatch:
 
 jobs:

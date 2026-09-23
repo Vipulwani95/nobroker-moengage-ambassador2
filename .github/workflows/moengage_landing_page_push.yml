@@ -1,9 +1,6 @@
 name: Moengage Landing page push
 
 on:
-  schedule:
-  # # 6:02 AM IST = 12:32 AM UTC (IST is UTC+5:30) daily
-    - cron: '32 0 * * *'
   workflow_dispatch:
 
 jobs:

@@ -1,9 +1,6 @@
 name: Moengage Acquisition leads push all
 
 on:
-  schedule:
-  # # 5:02 AM IST = 11:32 PM UTC (IST is UTC+5:30) daily
-    - cron: '32 23 * * *'
   workflow_dispatch:
     inputs:
       cycle_day_override:

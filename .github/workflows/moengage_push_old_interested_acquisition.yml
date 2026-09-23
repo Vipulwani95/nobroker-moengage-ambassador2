@@ -1,9 +1,6 @@
 name: Moengage Interested but form not filled old acquistion
 
 on:
-  schedule:
-  # # 4:04 PM IST = 10:34 AM UTC (IST is UTC+5:30) daily
-    - cron: '34 10 * * *'
   workflow_dispatch:
 
 jobs:

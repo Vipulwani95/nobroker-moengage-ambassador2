@@ -1,9 +1,6 @@
 name: Kibana user state writing in Earning Tracker
 
 on:
-  schedule:
-  # # 8:10 AM IST = 2:40 AM UTC (IST is UTC+5:30) daily
-    - cron: '40 2 * * *'
   workflow_dispatch:
 
 jobs:
