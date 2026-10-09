@@ -273,18 +273,12 @@ def parse_sheet_date(date_str):
 
 
 def is_date_in_range(date_val_str):
-
     parsed = parse_sheet_date(date_val_str)
-
     if not parsed:
-
         return False
-
     ist_today = get_ist_now().replace(hour=0, minute=0, second=0, microsecond=0)
-
-    start_date = ist_today - timedelta(days=7)
-
-    return start_date <= parsed <= ist_today
+    # Changed from 7 days range to today only
+    return parsed == ist_today
 
 
 def row_matches_filter(row):
